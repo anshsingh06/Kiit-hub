@@ -1,23 +1,20 @@
-// server/server.js
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+require('dotenv').config();
+const authRoutes = require('./routes/auth');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
 
-// Sample route
-app.get("/", (req, res) => {
-  res.send("KIIT Connect Hub backend running");
-});
+app.use('/api/auth', authRoutes);
 
-// Connect to MongoDB and start server
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URI)
   .then(() => {
-    app.listen(5000, () => {
-      console.log("Server running on port 5000");
+    console.log('Connected to DB');
+    app.listen(process.env.PORT || 5000, () => {
+      console.log('Server running...');
     });
   })
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .catch(err => console.log('MongoDB connection error:', err));
+
+
