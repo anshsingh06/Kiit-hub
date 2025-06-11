@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const authenticateToken = require('../middleware/authenticateToken');
+const authenticateToken = require('../middleware/authMiddleware');
 const User = require('../models/User');
 
-router.get('/profile', authenticateToken, async (req, res) => {
+router.get('/profile',authenticateToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) return res.status(404).json({ message: 'User not found' });
