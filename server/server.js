@@ -3,12 +3,14 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/postroutes');
+const commentRoutes = require('./routes/commentRoutes');
+
+
 
 const app = express();
 app.use(express.json());
 app.use('/api/posts', postRoutes);
-
-
+app.use('/api/comments', commentRoutes);
 app.use('/api/auth', authRoutes);
 
 mongoose.connect(process.env.MONGO_URI)

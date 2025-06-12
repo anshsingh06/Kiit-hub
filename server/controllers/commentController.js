@@ -6,16 +6,14 @@ const createComment = async (req, res) => {
   const { postId } = req.params;
 
   try {
-    // Create comment
     const comment = new Comment({
       postId,
-      authorId: req.user.id,
+      authorId: req.user.userId,
       text
     });
 
     await comment.save();
 
-    // Push comment to post
     await Post.findByIdAndUpdate(postId, {
       $push: { comments: comment._id }
     });
