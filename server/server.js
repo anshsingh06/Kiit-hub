@@ -6,10 +6,6 @@ const postRoutes = require('./routes/postroutes');
 const commentRoutes = require('./routes/commentRoutes');
 const newsRoutes = require('./routes/newsRoutes');
 
-
-
-
-
 const app = express();
 app.use(express.json());
 app.use('/api/posts', postRoutes);
