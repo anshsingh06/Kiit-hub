@@ -38,4 +38,33 @@ const getAllNews = async (req, res) => {
   }
 };
 
-module.exports = { createNews, getAllNews };
+// DELETE /api/news/:id
+const deleteNews = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleted = await NewsEvent.findByIdAndDelete(id);
+    if (!deleted) return res.status(404).json({ message: 'News not found' });
+    res.json({ message: 'News deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting news' });
+  }
+};
+
+// PUT /api/news/:id
+const updateNews = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updated = await NewsEvent.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ message: 'News not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating news' });
+  }
+};
+
+module.exports = {
+  createNews,
+  getAllNews,
+  deleteNews,
+  updateNews
+};
