@@ -4,6 +4,9 @@ require('dotenv').config();
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/postroutes');
 const commentRoutes = require('./routes/commentRoutes');
+const newsRoutes = require('./routes/newsRoutes');
+
+
 
 
 
@@ -12,6 +15,7 @@ app.use(express.json());
 app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/news', newsRoutes);
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
