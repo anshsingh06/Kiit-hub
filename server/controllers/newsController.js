@@ -27,12 +27,25 @@ try {
 };
 
 const getAllNews = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;       // default: page 1
+  const limit = parseInt(req.query.limit) || 5;     // default: 5 items per page
+
+  const skip = (page - 1) * limit;
+
   try {
+    const total = await NewsEvent.countDocuments();
     const newsList = await NewsEvent.find()
       .populate('postedBy', 'name department')
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }) // latest first
+      .skip(skip)
+      .limit(limit);
 
-    res.json(newsList);
+    res.json({
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+      news: newsList
+    });
   } catch (err) {
     res.status(500).json({ message: 'Error fetching news' });
   }
