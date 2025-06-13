@@ -27,16 +27,43 @@ try {
 };
 
 const getAllNews = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;       // default: page 1
-  const limit = parseInt(req.query.limit) || 5;     // default: 5 items per page
-
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 5;
   const skip = (page - 1) * limit;
 
+  // New query filters
+  const search = req.query.search || '';
+  const tag = req.query.tag || '';
+  const date = req.query.date; // optional exact date
+
+  // Build MongoDB query
+  const query = {};
+
+  if (search) {
+    query.title = { $regex: search, $options: 'i' }; // case-insensitive search
+  }
+
+  if (tag) {
+    query.tags = tag; // matches tag exactly (if using array of tags)
+  }
+
+  if (date) {
+    const selectedDate = new Date(date);
+    const nextDay = new Date(selectedDate);
+    nextDay.setDate(selectedDate.getDate() + 1);
+
+    query.eventDate = {
+      $gte: selectedDate,
+      $lt: nextDay
+    };
+  }
+
   try {
-    const total = await NewsEvent.countDocuments();
-    const newsList = await NewsEvent.find()
+    const total = await NewsEvent.countDocuments(query);
+
+    const newsList = await NewsEvent.find(query)
       .populate('postedBy', 'name department')
-      .sort({ createdAt: -1 }) // latest first
+      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
 
@@ -47,9 +74,10 @@ const getAllNews = async (req, res) => {
       news: newsList
     });
   } catch (err) {
-    res.status(500).json({ message: 'Error fetching news' });
+    res.status(500).json({ message: 'Error fetching filtered news' });
   }
 };
+
 
 // DELETE /api/news/:id
 const deleteNews = async (req, res) => {
