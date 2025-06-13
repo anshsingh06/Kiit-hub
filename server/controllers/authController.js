@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
-  const { name, email, password, department, year } = req.body;
+  const { name, email, password, department, year, role} = req.body;
 
   // Ensure only college email
   if (!email.endsWith('@kiit.ac.in')) {
@@ -16,7 +16,14 @@ const register = async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(password, salt);
 
-  const user = new User({ name, email, passwordHash, department, year });
+  const user = new User({
+    name,
+    email,
+    passwordHash: passwordHash,
+    department,
+    year,
+    role: role && role === 'admin' ? 'admin' : 'student' 
+  });
   await user.save();
 
   res.status(201).json({ message: 'User registered successfully' });

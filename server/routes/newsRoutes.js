@@ -3,6 +3,8 @@ const router = express.Router();
 const { createNews, getAllNews } = require('../controllers/newsController');
 const authenticateToken = require('../middleware/authMiddleware');
 const upload = require('../middleware/uploadMiddleware');
+const adminMiddleware = require('../middleware/adminMiddleware');
+
 
 // GET all news
 router.get('/', getAllNews);
@@ -11,6 +13,7 @@ router.get('/', getAllNews);
 router.post(
   '/',
   authenticateToken,
+   adminMiddleware, 
   upload.fields([
     { name: 'images', maxCount: 5 },
     { name: 'attachments', maxCount: 3 }
