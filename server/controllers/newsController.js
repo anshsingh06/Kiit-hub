@@ -2,15 +2,21 @@ const NewsEvent = require('../models/newsevent');
 
 const createNews = async (req, res) => {
   const { title, description, images, attachments, eventDate } = req.body;
+// Extract file names from uploaded files
+  const imageFiles = req.files['images'] || [];
+  const attachmentFiles = req.files['attachments'] || [];
 
-  try {
+  const uploadedImages = imageFiles.map(file => file.filename);
+  const uploadedAttachments = attachmentFiles.map(file => file.filename);
+
+try {
     const news = new NewsEvent({
       title,
       description,
-      images,
-      attachments,
+      images: uploadedImages,
+      attachments: uploadedAttachments,
       eventDate,
-      postedBy: req.user.id
+     postedBy: req.user.id
     });
 
     await news.save();
