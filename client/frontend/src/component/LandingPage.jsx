@@ -4,7 +4,7 @@ function LandingPage() {
   return (
     <section className="bg-white min-h-screen px-6 py-16 flex flex-col items-center text-center">
       {/* Headline */}
-      <h1 className="text-4xl sm:text-5xl font-black text-black mb-4">
+      <h1 className="text-5xl sm:text-3xl font-black text-black mb-3">
         Connect. Engage.
       </h1>
       <p className="text-xl sm:text-2xl text-gray-500 font-semibold mb-10">
