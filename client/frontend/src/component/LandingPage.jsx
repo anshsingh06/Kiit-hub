@@ -1,4 +1,8 @@
 import React from 'react';
+import img1 from '../assets/img1.jpg'; 
+import img2 from '../assets/img2.jpg'; 
+import img3 from '../assets/img3.jpg'; 
+import img4 from '../assets/img4.jpg'; 
 
 function LandingPage() {
   return (
@@ -17,34 +21,37 @@ function LandingPage() {
       <p className="text-xl sm:text-2xl text-gray-500 font-semibold mb-10">
         Secure student portal for campus life.
       </p>
+      
       </div>
 
     
-        <div className="h-90 w-200 bg-gray-100 rounded-xl flex items-center justify-center ml-50">
-          <div className="w-12 h-12 bg-white"></div>
-        </div>
+      <div>
+        
+      <img src={img1} className="h-90 w-200 rounded-xl flex items-center justify-center ml-50" />
+      </div>
      
 
 
       {/* Section 2 - Senior*/}
       <div className="w-full max-w-6xl mt-20 grid sm:grid-cols-2 gap-12">
         <div>
-          <h2 className="text-2xl font-bold text-black mb-2">Ask seniors</h2>
-          <p className="text-gray-500 text-base">
+          <h2 className="text-2xl font-bold text-black mb-2 ml-30">Ask seniors</h2>
+          <p className="text-gray-500 text-base ml-30">
             Open academic and placement forums <br /> where students receive <br />expert insights from seniors.
           </p>
         </div>
 
-       
-        <div className="h-60 bg-gray-100 rounded-xl flex items-center justify-center mr-25">
-          <div className="w-12 h-12 bg-white rounded"></div>
-        </div>
+
+        <div> 
+      <img src={img2} className="h-60 w-105 rounded-xl flex items-center justify-center mr-25" />
+      </div>
 
          {/* Section 3 - Event*/}
 
-       <div className="h-60 bg-gray-100 rounded-xl flex items-center justify-center mr-25">
-          <div className="w-12 h-12 bg-white rounded"></div>
-        </div>
+        <div> 
+      <img src={img3} className="h-60 w-105 rounded-xl flex items-center justify-center mr-25" />
+      </div>
+
 
   <div className="flex flex-col justify-center">
     <h2 className="text-xl font-bold text-black mb-1">Event updates</h2>
@@ -55,15 +62,15 @@ function LandingPage() {
 
   {/* Interactive Platform */}
   <div className="flex flex-col justify-center">
-    <h2 className="text-xl font-bold text-black mb-1">Interactive platform</h2>
-    <p className="text-gray-500 text-sm">
-      Participate in secure, moderated discussions and campus community activities.
+    <h2 className="text-xl font-bold text-black mb-1 ml-30">Interactive platform</h2>
+    <p className="text-gray-500 text-sm ml-30">
+      Participate in secure<br/> moderated discussions and <br/>campus community activities.
     </p>
   </div>
-  <div className="h-60 bg-gray-100 rounded-xl flex items-center justify-center mr-25">
-          <div className="w-12 h-12 bg-white rounded"></div>
-        </div>
-  
+  <div> 
+      <img src={img4} className="h-60 w-105 rounded-xl flex items-center justify-center mr-25" />
+      </div>
+
   </div>
   </div>
 
@@ -79,7 +86,7 @@ function LandingPage() {
       placeholder="rollno@kiit.ac.in"
       className="w-full p-3 rounded bg-gray-100 outline-none mb-4"
     />
-    <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition">
+    <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer">
       Sign Up
     </button>
   </div>
