@@ -1,7 +1,13 @@
 import React from 'react';
+import { useState } from 'react';
+import SignUp from './signup';
 import logo from '../assets/logo.png'; 
 
 function Navbar() {
+
+
+  const [showSignUp, setShowSignUp] = useState(false);
+
   return (
     <nav className="fixed top-0 w-full z-50 flex items-center justify-between px-6 py-4 shadow-md bg-white">
       <div className="flex items-center space-x-2">
@@ -14,10 +20,15 @@ function Navbar() {
       </div>
         
       <div>
-        <button className="bg-black text-white px-4 py-2 rounded-full">Sign Up</button>
+        <button onClick={()=>setShowSignUp(true)} className="bg-black text-white px-4 py-2 rounded-full">Sign Up</button>
+        {showSignUp && <SignUp/>}
+          
+
+        
       </div>
     </nav>
   );
 }
+
 
 export default Navbar;

@@ -1,10 +1,14 @@
 import React from 'react';
+import { useState } from 'react';
+import SignUp from './signup';
 import img1 from '../assets/img1.jpg'; 
 import img2 from '../assets/img2.jpg'; 
 import img3 from '../assets/img3.jpg'; 
 import img4 from '../assets/img4.jpg'; 
 
 function LandingPage() {
+   const [showSignUp, setShowSignUp] = useState(false);
+
   return (
     <section >
     
@@ -86,9 +90,10 @@ function LandingPage() {
       placeholder="rollno@kiit.ac.in"
       className="w-full p-3 rounded bg-gray-100 outline-none mb-4"
     />
-    <button className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+    <button onClick={()=>setShowSignUp(true)} className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer">
       Sign Up
     </button>
+    {showSignUp && <SignUp/>}
   </div>
 </div>
 
@@ -142,5 +147,6 @@ function LandingPage() {
 
   );
 }
+
 
 export default LandingPage;

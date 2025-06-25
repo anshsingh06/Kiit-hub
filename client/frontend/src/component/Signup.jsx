@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { CircleX } from 'lucide-react'; 
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -28,7 +29,9 @@ const SignUp = () => {
   };
 
   return (
+     
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
+      <button className='place-self-end cursor-pointer flex justify-between'><CircleX size={30}/></button>
       <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
       {message && <div className="mb-4 text-sm text-red-500">{message}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
