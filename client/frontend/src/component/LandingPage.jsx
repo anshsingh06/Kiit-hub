@@ -91,10 +91,27 @@ function LandingPage() {
       placeholder="rollno@kiit.ac.in"
       className="w-full p-3 rounded bg-gray-100 outline-none mb-4"
     />
-    <button onClick={()=>setShowSignUp(true)} className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer">
+    <button
+      onClick={() => setShowSignUp(true)}
+      className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer"
+    >
       Sign Up
     </button>
-    {showSignUp && <SignUp />} 
+
+    {showSignUp && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+          <button
+            className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+            onClick={() => setShowSignUp(false)}
+          >
+            &times;
+          </button>
+          <SignUp />
+    </div>
+  </div>
+)}
+
   </div>
 </div>
 
