@@ -8,6 +8,7 @@ import img4 from '../assets/img4.jpg';
 
 function LandingPage() {
    const [showSignUp, setShowSignUp] = useState(false);
+    
 
   return (
     <section >
@@ -93,7 +94,7 @@ function LandingPage() {
     <button onClick={()=>setShowSignUp(true)} className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition cursor-pointer">
       Sign Up
     </button>
-    {showSignUp && <SignUp/>}
+    {showSignUp && <SignUp />} 
   </div>
 </div>
 
