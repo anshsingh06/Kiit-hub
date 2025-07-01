@@ -3,6 +3,10 @@ import { useState } from 'react';
 import SignUp from './signup';
 import { CircleX } from 'lucide-react';
 import logo from '../assets/logo.png'; 
+import { Link } from 'react-router-dom';
+
+
+
 
 function Navbar() {
 
@@ -16,7 +20,14 @@ function Navbar() {
       </div>
       <div className="space-x-4">
         <button className="bg-gray-300 text-black px-4 py-2 rounded-full hover:bg-gray-400 transition">Home</button>
-        <button className="bg-gray-300 text-black px-4 py-2 rounded-full hover:bg-gray-400 transition">Events</button>
+        <Link
+  to="/events"
+  className="bg-gray-300 text-black px-4 py-2 rounded-full hover:bg-gray-400 transition inline-block"
+>
+  Events
+</Link>
+        
+        
         <button className="bg-gray-300 text-black px-4 py-2 rounded-full hover:bg-gray-400 transition">Discussion</button>
       </div>
         
