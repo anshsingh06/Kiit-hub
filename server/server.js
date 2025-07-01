@@ -14,6 +14,8 @@ app.use('/api/posts', postRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
+app.use('/uploads', express.static('uploads'));
+
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {

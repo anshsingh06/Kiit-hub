@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const NewsEvent = require('../models/newsevent');
+const upload = require('../middleware/uploadMiddleware');
+
 
 // GET all news and events
 router.get('/', async (req, res) => {
@@ -15,17 +17,30 @@ router.get('/', async (req, res) => {
 });
 
 // CREATE news or event (public)
-router.post('/', async (req, res) => {
-  try {
-    console.log("Received body:", req.body);
-    const newsEvent = new NewsEvent(req.body);
-    await newsEvent.save();
-    res.status(201).json(newsEvent);
-  } catch (err) {
-    console.error("Error creating news/event:", err);
-    res.status(500).json({ error: 'Failed to create news/event' });
+router.post(
+  "/",
+  upload.single("image"), // Accept ONE image file field named "image"
+  async (req, res) => {
+    try {
+      console.log("Received body:", req.body);
+      console.log("Received file:", req.file);
+
+      const newsEvent = new NewsEvent({
+        title: req.body.title,
+        description: req.body.description,
+        eventDate: req.body.eventDate,
+        images: req.file ? [req.file.filename] : [],
+      });
+
+      await newsEvent.save();
+      res.status(201).json(newsEvent);
+    } catch (err) {
+      console.error("Error creating news/event:", err);
+      res.status(500).json({ error: "Failed to create news/event" });
+    }
   }
-});
+);
+
 
 // GET single news/event by ID
 router.get('/:id', async (req, res) => {
