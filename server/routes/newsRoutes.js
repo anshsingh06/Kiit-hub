@@ -1,33 +1,35 @@
+// routes/newsRoutes.js
 const express = require('express');
 const router = express.Router();
-const { createNews, getAllNews } = require('../controllers/newsController');
-const authenticateToken = require('../middleware/authMiddleware');
-const upload = require('../middleware/uploadMiddleware');
-const adminMiddleware = require('../middleware/adminMiddleware');
 const NewsEvent = require('../models/newsevent');
-const { deleteNews, updateNews } = require('../controllers/newsController');
 
+// GET all news and events
+router.get('/', async (req, res) => {
+  try {
+    const news = await NewsEvent.find().populate('postedBy', 'name department');
+    res.json(news);
+  } catch (err) {
+    console.error("Error fetching news:", err);
+    res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
 
-
-// GET all news
-router.get('/', getAllNews);
-
-// POST a news/event (protected)
-router.post(
-  '/',
-  authenticateToken,
-   adminMiddleware, 
-  upload.fields([
-    { name: 'images', maxCount: 5 },
-    { name: 'attachments', maxCount: 3 }
-  ]),
-  createNews
-);
+// CREATE news or event (public)
+router.post('/', async (req, res) => {
+  try {
+    console.log("Received body:", req.body);
+    const newsEvent = new NewsEvent(req.body);
+    await newsEvent.save();
+    res.status(201).json(newsEvent);
+  } catch (err) {
+    console.error("Error creating news/event:", err);
+    res.status(500).json({ error: 'Failed to create news/event' });
+  }
+});
 
 // GET single news/event by ID
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-
   try {
     const news = await NewsEvent.findById(id).populate('postedBy', 'name department');
     if (!news) {
@@ -35,17 +37,39 @@ router.get('/:id', async (req, res) => {
     }
     res.json(news);
   } catch (err) {
+    console.error("Error fetching news by ID:", err);
     res.status(500).json({ message: 'Error fetching news by ID' });
   }
 });
 
+// UPDATE news/event (public)
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const updated = await NewsEvent.findByIdAndUpdate(id, req.body, { new: true });
+    if (!updated) {
+      return res.status(404).json({ message: 'News not found' });
+    }
+    res.json(updated);
+  } catch (err) {
+    console.error("Error updating news/event:", err);
+    res.status(500).json({ message: 'Error updating news/event' });
+  }
+});
 
-// DELETE news (admin only)
-router.delete('/:id', authenticateToken, adminMiddleware, deleteNews);
-
-// PUT update news (admin only)
-router.put('/:id', authenticateToken, adminMiddleware, updateNews);
-
-
+// DELETE news/event (public)
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await NewsEvent.findByIdAndDelete(id);
+    if (!deleted) {
+      return res.status(404).json({ message: 'News not found' });
+    }
+    res.json({ message: 'News deleted successfully' });
+  } catch (err) {
+    console.error("Error deleting news/event:", err);
+    res.status(500).json({ message: 'Error deleting news/event' });
+  }
+});
 
 module.exports = router;
