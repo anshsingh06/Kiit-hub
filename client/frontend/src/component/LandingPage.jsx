@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { CircleX } from 'lucide-react';
 import SignUp from './signup';
 import img1 from '../assets/img1.jpg'; 
 import img2 from '../assets/img2.jpg'; 
@@ -102,10 +103,10 @@ function LandingPage() {
       <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
           <button
-            className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+            className="place-self-end cursor-pointer flex justify-between  "
             onClick={() => setShowSignUp(false)}
-          >
-            &times;
+          > <CircleX size={30}/>
+          
           </button>
           <SignUp />
     </div>
