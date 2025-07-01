@@ -8,8 +8,8 @@ const SignUp = () => {
     email: '',
     password: '',
     department: '',
-    role:'',
-    year: ''
+    year: '',
+    role:''
   });
 
   const [message, setMessage] = useState('');
