@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import SignUp from './signup';
+import { CircleX } from 'lucide-react';
 import logo from '../assets/logo.png'; 
 
 function Navbar() {
@@ -21,10 +22,22 @@ function Navbar() {
         
       <div>
         <button onClick={()=>setShowSignUp(true)} className="bg-black text-white px-4 py-2 rounded-full">Sign Up</button>
-        {showSignUp && <SignUp/>}
+
+        {showSignUp && (
+      <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
+          <button
+            className="place-self-end cursor-pointer flex justify-between  "
+            onClick={() => setShowSignUp(false)}
+          > <CircleX size={30}/>
+          
+          </button>
+          <SignUp />
           
 
-        
+      </div>
+      </div>
+        )}
       </div>
     </nav>
   );
