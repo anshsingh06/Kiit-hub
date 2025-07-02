@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const NewsEvent = require('../models/newsevent');
 const upload = require('../middleware/uploadMiddleware');
+const authenticateToken = require("../middleware/authMiddleware");
 
 
 // GET all news and events
@@ -58,7 +59,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // UPDATE news/event (public)
-router.put('/:id', async (req, res) => {
+router.put("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {
     const updated = await NewsEvent.findByIdAndUpdate(id, req.body, { new: true });
@@ -73,7 +74,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE news/event (public)
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   try {
     const deleted = await NewsEvent.findByIdAndDelete(id);

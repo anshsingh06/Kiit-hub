@@ -9,8 +9,8 @@ const EventPage = () => {
   });
   const [image, setImage] = useState(null);
   const [events, setEvents] = useState([]);
+  const userId = localStorage.getItem("userId"); // Assumes you store it here
 
-  // Fetch all events when the component mounts
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -43,19 +43,36 @@ const EventPage = () => {
         data.append("image", image);
       }
 
+      // Include token if needed
+      const token = localStorage.getItem("token");
       await axios.post("http://localhost:5000/api/news", data, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
 
       alert("Event created successfully!");
       setForm({ title: "", description: "", eventDate: "" });
       setImage(null);
-      fetchEvents(); // Refresh event list
+      fetchEvents();
     } catch (err) {
       console.error("Error creating event:", err);
       alert("Error creating event");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`http://localhost:5000/api/news/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("Event deleted");
+      fetchEvents();
+    } catch (err) {
+      console.error("Error deleting event:", err);
+      alert("Error deleting event");
     }
   };
 
@@ -103,7 +120,7 @@ const EventPage = () => {
       <h2 className="text-xl font-bold mt-8 mb-4">All Events</h2>
       <div className="space-y-4">
         {events.map((event) => (
-          <div key={event._id} className="border p-4 rounded shadow">
+          <div key={event._id} className="border p-4 rounded shadow relative">
             <h3 className="text-lg font-semibold">{event.title}</h3>
             {event.images && event.images.length > 0 && (
               <img
@@ -118,6 +135,14 @@ const EventPage = () => {
                 Event Date: {new Date(event.eventDate).toLocaleDateString()}
               </p>
             )}
+            {event.postedBy && event.postedBy === userId && (
+              <button
+                onClick={() => handleDelete(event._id)}
+                className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+              >
+                Delete
+              </button>
+            )}
           </div>
         ))}
       </div>
@@ -126,5 +151,6 @@ const EventPage = () => {
 };
 
 export default EventPage;
+
 
 
