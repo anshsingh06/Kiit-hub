@@ -30,7 +30,7 @@ router.post(
         title: req.body.title,
         description: req.body.description,
         eventDate: req.body.eventDate,
-        images: req.file ? [req.file.filename] : [],
+        images: req.file ? [(req.file.filename)] : [],
       });
 
       await newsEvent.save();

@@ -1,19 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import EventModal from "./EventModal";
 
-const EventPage = () => {
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    eventDate: "",
-  });
-  const [image, setImage] = useState(null);
+export default function EventPage() {
   const [events, setEvents] = useState([]);
-  const userId = localStorage.getItem("userId"); // Assumes you store it here
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchEvents = async () => {
     try {
@@ -24,133 +15,65 @@ const EventPage = () => {
     }
   };
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const data = new FormData();
-      data.append("title", form.title);
-      data.append("description", form.description);
-      data.append("eventDate", form.eventDate);
-      if (image) {
-        data.append("image", image);
-      }
-
-      // Include token if needed
-      const token = localStorage.getItem("token");
-      await axios.post("http://localhost:5000/api/news", data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      alert("Event created successfully!");
-      setForm({ title: "", description: "", eventDate: "" });
-      setImage(null);
-      fetchEvents();
-    } catch (err) {
-      console.error("Error creating event:", err);
-      alert("Error creating event");
-    }
-  };
+  useEffect(() => {
+    fetchEvents();
+  }, []);
 
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/news/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Event deleted");
+      await axios.delete(`http://localhost:5000/api/news/${id}`);
       fetchEvents();
     } catch (err) {
       console.error("Error deleting event:", err);
-      alert("Error deleting event");
     }
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h2 className="text-2xl font-bold mb-4">Create Event</h2>
-      <form onSubmit={handleSubmit} className="space-y-4 border p-4 rounded shadow">
-        <input
-          type="text"
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="date"
-          name="eventDate"
-          value={form.eventDate}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageChange}
-          className="w-full"
-        />
+    <div className="p-6">
+      <div className="flex justify-between items-center mb-6 pt-18">
+        <h1 className="text-2xl font-bold">Events</h1>
         <button
-          type="submit"
-          className="w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition"
+          onClick={() => setShowModal(true)}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
         >
           Create Event
         </button>
-      </form>
+      </div>
 
-      <h2 className="text-xl font-bold mt-8 mb-4">All Events</h2>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event) => (
-          <div key={event._id} className="border p-4 rounded shadow relative">
-            <h3 className="text-lg font-semibold">{event.title}</h3>
+          <div key={event._id} className="bg-white shadow p-4 rounded relative">
             {event.images && event.images.length > 0 && (
               <img
                 src={`http://localhost:5000/uploads/${event.images[0]}`}
                 alt="Event"
-                className="mt-2 w-full max-h-64 object-cover rounded"
+                className="w-full h-48 object-cover rounded mb-4"
               />
             )}
-            <p className="mt-2">{event.description}</p>
+            <h2 className="text-xl font-semibold">{event.title}</h2>
+            <p className="text-gray-700">{event.description}</p>
             {event.eventDate && (
-              <p className="text-sm text-gray-600">
-                Event Date: {new Date(event.eventDate).toLocaleDateString()}
+              <p className="text-sm text-gray-500 mt-2">
+                {new Date(event.eventDate).toLocaleDateString()}
               </p>
             )}
-            {event.postedBy && event.postedBy === userId && (
-              <button
-                onClick={() => handleDelete(event._id)}
-                className="absolute top-2 right-2 text-red-600 hover:text-red-800"
-              >
-                Delete
-              </button>
-            )}
+            <button
+              onClick={() => handleDelete(event._id)}
+              className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+            >
+              Delete
+            </button>
           </div>
         ))}
       </div>
+
+      {showModal && (
+        <EventModal onClose={() => setShowModal(false)} onEventCreated={fetchEvents} />
+      )}
     </div>
   );
-};
+}
 
-export default EventPage;
 
 
 
