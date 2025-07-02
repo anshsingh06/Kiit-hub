@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import EventModal from "./EventModal";
+import EventDetailModal from "./EventDetailModal";
+
 
 export default function EventPage() {
   const [events, setEvents] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+   const [showModal, setShowModal] = useState(false);
+   //const [showCreateModal, setShowCreateModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
   const fetchEvents = async () => {
     try {
@@ -51,16 +55,29 @@ export default function EventPage() {
               />
             )}
             <h2 className="text-xl font-semibold">{event.title}</h2>
-            <p className="text-gray-700">{event.description}</p>
+            <p className="text-gray-700">{event.description.slice(0, 100)}</p>
             {event.eventDate && (
               <p className="text-sm text-gray-500 mt-2">
                 {new Date(event.eventDate).toLocaleDateString()}
               </p>
+            
             )}
+              <button
+            onClick={() => setSelectedEvent(event)}
+            className="text-blue-500 hover:underline mt-2"
+          >
+            See More
+          </button>
             <button
               onClick={() => handleDelete(event._id)}
               className="absolute top-2 right-2 text-red-600 hover:text-red-800"
             >
+              {selectedEvent && (
+        <EventDetailModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
               Delete
             </button>
           </div>
@@ -71,6 +88,8 @@ export default function EventPage() {
         <EventModal onClose={() => setShowModal(false)} onEventCreated={fetchEvents} />
       )}
     </div>
+
+
   );
 }
 
