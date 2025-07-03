@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import QuestionModal from "./QuestionModal";
 
 function DiscussionPage() {
   const [posts, setPosts] = useState([]);
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
   const [answerInputs, setAnswerInputs] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const fetchPosts = async () => {
     try {
@@ -19,21 +19,6 @@ function DiscussionPage() {
   useEffect(() => {
     fetchPosts();
   }, []);
-
-  const handleCreatePost = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post("http://localhost:5000/api/posts", {
-        title: newTitle,
-        content: newContent,
-      });
-      setNewTitle("");
-      setNewContent("");
-      fetchPosts();
-    } catch (err) {
-      console.error("Error creating post:", err);
-    }
-  };
 
   const handleAddAnswer = async (postId) => {
     const answerText = answerInputs[postId];
@@ -72,31 +57,25 @@ function DiscussionPage() {
 
   return (
     <div className="max-w-4xl mx-auto p-4 mt-20">
-      <h1 className="text-3xl font-bold mb-4">Discussion Forum</h1>
-
-      {/* Create Question */}
-      <form onSubmit={handleCreatePost} className="mb-6 bg-white p-4 rounded shadow">
-        <input
-          type="text"
-          placeholder="Question Title"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-          className="w-full border px-3 py-2 mb-2 rounded"
-          required
-        />
-        <textarea
-          placeholder="Add details..."
-          value={newContent}
-          onChange={(e) => setNewContent(e.target.value)}
-          className="w-full border px-3 py-2 mb-2 rounded"
-          required
-        />
-        <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Discussion Forum</h1>
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
           Ask Question
         </button>
-      </form>
+      </div>
 
-      {/* All Posts */}
+      {/* Show modal */}
+      {showModal && (
+        <QuestionModal
+          onClose={() => setShowModal(false)}
+          onQuestionCreated={fetchPosts}
+        />
+      )}
+
+      {/* All posts */}
       {posts.map((post) => (
         <div key={post._id} className="bg-white p-4 mb-4 rounded shadow">
           <h2 className="text-xl font-semibold">{post.title}</h2>
@@ -156,4 +135,5 @@ function DiscussionPage() {
 }
 
 export default DiscussionPage;
+
 
