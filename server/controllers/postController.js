@@ -9,7 +9,8 @@ const createPost = async (req, res) => {
       title,
       content,
       tags,
-      authorId: req.user.id // from token middleware
+      //authorId: req.user.id     
+      // from token middleware
     });
 
     await post.save();
