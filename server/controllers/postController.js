@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const Answer = require('../models/answer');
 
 // Create a new post
 const createPost = async (req, res) => {
@@ -30,4 +31,35 @@ const getAllPosts = async (req, res) => {
   }
 };
 
-module.exports = { createPost, getAllPosts };
+exports.addAnswer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { text } = req.body;
+
+    const answer = new Answer({
+      text,
+      // postedBy: req.user?.id, // If you have authentication
+    });
+
+    await answer.save();
+
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    post.comments.push(answer._id);
+    await post.save();
+
+    res.status(201).json(answer);
+  } catch (err) {
+    console.error("Error adding answer:", err);
+    res.status(500).json({ message: "Server error adding answer" });
+  }
+};
+
+
+
+
+
+module.exports = { createPost, getAllPosts, addAnswer };
