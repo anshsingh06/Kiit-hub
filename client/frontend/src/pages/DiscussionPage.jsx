@@ -103,7 +103,7 @@ function DiscussionPage() {
                 </div>
               ))
             ) : (
-              <p className="text-sm text-gray-500">No answers yet.</p>
+              <p className="text-sm text-gray-500">No comment yet.</p>
             )}
 
             {/* Add Answer */}
@@ -124,7 +124,7 @@ function DiscussionPage() {
                 onClick={() => handleAddAnswer(post._id)}
                 className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
               >
-                Answer
+                Comment
               </button>
             </div>
           </div>
