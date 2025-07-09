@@ -34,7 +34,7 @@ export default function EventModal({ onClose, onEventCreated }) {
         >
           &times;
         </button>
-        <h2 className="text-xl font-semibold mb-4">Create New New Event</h2>
+        <h2 className="text-xl font-semibold mb-4">Create New Event</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
