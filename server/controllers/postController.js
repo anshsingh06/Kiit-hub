@@ -31,6 +31,11 @@ const getAllPosts = async (req, res) => {
   }
 };
 
+
+
+const addAnswer = async (req, res) => {
+  const { id, text } = req.body;
+
 exports.addAnswer = async (req, res) => {
   try {
     const { id } = req.params;
@@ -38,7 +43,7 @@ exports.addAnswer = async (req, res) => {
 
     const answer = new Answer({
       text,
-      // postedBy: req.user?.id, // If you have authentication
+      // postedBy: req.user?.id, 
     });
 
     await answer.save();
@@ -57,6 +62,8 @@ exports.addAnswer = async (req, res) => {
     res.status(500).json({ message: "Server error adding answer" });
   }
 };
+}
+
 
 
 
