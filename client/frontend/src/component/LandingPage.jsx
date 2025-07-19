@@ -129,9 +129,9 @@ function LandingPage() {
     <div>
       <h4 className="font-semibold text-black mb-2">Portal</h4>
       <ul className="space-y-1">
-        <li>About</li>
-        <li>How it Works</li>
-        <li>Support</li>
+        <li><a href="/about" className="hover:underline">About</a></li>
+        <li><a href="/howitworks" className="hover:underline">How it Works</a></li>
+        <li><a href="/support" className="hover:underline">Support</a></li>
       </ul>
     </div>
 
@@ -154,6 +154,8 @@ function LandingPage() {
         <li>Clubs</li>
       </ul>
     </div>
+    
+
   </div>
   <div className="text-xs text-center text-gray-400 mt-8">
     © 2025 KIIT Connect. All rights reserved.

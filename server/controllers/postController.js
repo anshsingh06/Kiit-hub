@@ -34,7 +34,7 @@ const getAllPosts = async (req, res) => {
 
 
 const addAnswer = async (req, res) => {
-  const { id, text } = req.body;
+const { id, text } = req.body;
 
 exports.addAnswer = async (req, res) => {
   try {
