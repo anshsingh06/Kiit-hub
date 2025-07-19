@@ -139,9 +139,9 @@ function LandingPage() {
     <div>
       <h4 className="font-semibold text-black mb-2">Community</h4>
       <ul className="space-y-1">
-        <li>Discussions</li>
-        <li>Events</li>
-        <li>Contact Us</li>
+        <li><a href="/discussion" className='hover:underline'>Discussion </a></li>
+        <li><a href="/events" className='hover:underline'>Event </a></li>
+         <li><a href="/contact" className='hover:underline'>Contact us </a></li>
       </ul>
     </div>
 
