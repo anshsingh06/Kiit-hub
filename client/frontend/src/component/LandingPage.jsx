@@ -149,9 +149,9 @@ function LandingPage() {
     <div>
       <h4 className="font-semibold text-black mb-2">Campus</h4>
       <ul className="space-y-1">
-        <li>Academic FAQs</li>
-        <li>Placements</li>
-        <li>Clubs</li>
+        <li><a href="/faq" className='hover:underline'>Academic FAQs </a></li>
+        <li><a href="/placements" className='hover:underline'>Placements</a></li>
+        <li><a href="/clubs" className='hover:underline'>Clubs</a></li>
       </ul>
     </div>
     
