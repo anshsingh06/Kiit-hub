@@ -1,11 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { CircleX } from 'lucide-react';
 import SignUp from './signup';
+import about from '../footer/about';
 import img1 from '../assets/img1.jpg'; 
 import img2 from '../assets/img2.jpg'; 
 import img3 from '../assets/img3.jpg'; 
 import img4 from '../assets/img4.jpg'; 
+
 
 function LandingPage() {
    const [showSignUp, setShowSignUp] = useState(false);
@@ -125,38 +128,37 @@ function LandingPage() {
       <div className="font-bold text-lg text-black mb-2">🟥◯▲</div>
     </div>
 
-    {/* Portal */}
-    <div>
-      <h4 className="font-semibold text-black mb-2">Portal</h4>
-      <ul className="space-y-1">
-        <li><a href="/about" className="hover:underline">About</a></li>
-        <li><a href="/howitworks" className="hover:underline">How it Works</a></li>
-        <li><a href="/support" className="hover:underline">Support</a></li>
-      </ul>
-    </div>
 
-    {/* Community */}
-    <div>
-      <h4 className="font-semibold text-black mb-2">Community</h4>
-      <ul className="space-y-1">
-        <li><a href="/discussion" className='hover:underline'>Discussion </a></li>
-        <li><a href="/events" className='hover:underline'>Event </a></li>
-         <li><a href="/contact" className='hover:underline'>Contact us </a></li>
-      </ul>
-    </div>
-
-    {/* Campus */}
-    <div>
-      <h4 className="font-semibold text-black mb-2">Campus</h4>
-      <ul className="space-y-1">
-        <li><a href="/faq" className='hover:underline'>Academic FAQs </a></li>
-        <li><a href="/placements" className='hover:underline'>Placements</a></li>
-        <li><a href="/clubs" className='hover:underline'>Clubs</a></li>
-      </ul>
-    </div>
-    
-
+  {/* Portal */}
+  <div>
+    <h4 className="font-semibold text-black mb-2">Portal</h4>
+    <ul className="space-y-1">
+      <li><Link to="/about" className="hover:underline">About</Link></li>
+      <li><Link to="/howitworks" className="hover:underline">How it Works</Link></li>
+      <li><Link to="/support" className="hover:underline">Support</Link></li>
+    </ul>
   </div>
+
+  {/* Community */}
+  <div>
+    <h4 className="font-semibold text-black mb-2">Community</h4>
+    <ul className="space-y-1">
+      <li><Link to="/discussion" className="hover:underline">Discussion</Link></li>
+      <li><Link to="/events" className="hover:underline">Events</Link></li>
+      <li><Link to="/contact" className="hover:underline">Contact Us</Link></li>
+    </ul>
+  </div>
+
+  {/* Campus */}
+  <div>
+    <h4 className="font-semibold text-black mb-2">Campus</h4>
+    <ul className="space-y-1">
+      <li><Link to="/faq" className="hover:underline">Academic FAQs</Link></li>
+      <li><Link to="/placements" className="hover:underline">Placements</Link></li>
+      <li><Link to="/clubs" className="hover:underline">Clubs</Link></li>
+    </ul>
+  </div>
+</div>
   <div className="text-xs text-center text-gray-400 mt-8">
     © 2025 KIIT Connect. All rights reserved.
   </div>
