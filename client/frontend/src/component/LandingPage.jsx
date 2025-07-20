@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { CircleX } from 'lucide-react';
 import SignUp from './signup';
-import about from '../footer/about';
+
 import img1 from '../assets/img1.jpg'; 
 import img2 from '../assets/img2.jpg'; 
 import img3 from '../assets/img3.jpg'; 
