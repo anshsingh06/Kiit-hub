@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 
 export default function EventModal({ onClose, onEventCreated }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
+  const modalRef = useRef();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
@@ -24,9 +24,16 @@ export default function EventModal({ onClose, onEventCreated }) {
       console.error("Error creating event:", err);
     }
   };
+  
+  
+  const closeModal = (e) => {
+    if (modalRef.current=== e.target) {
+      onClose();
+    }
+  }
 
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
+    <div ref={modalRef} onClick={closeModal} className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
         <button
           onClick={onClose}

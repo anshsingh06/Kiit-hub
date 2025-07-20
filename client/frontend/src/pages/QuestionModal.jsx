@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 
 function QuestionModal({ onClose, onQuestionCreated }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const modalRef = useRef();
+
+  const closeModal = (e) => {
+    if (modalRef.current=== e.target) {
+      onClose();
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +27,7 @@ function QuestionModal({ onClose, onQuestionCreated }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div ref={modalRef} onClick={closeModal}className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded shadow w-full max-w-lg relative">
         <button
           className="absolute top-2 right-2 text-gray-600 text-xl hover:text-black"
