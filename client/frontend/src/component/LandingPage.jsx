@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { CircleX } from 'lucide-react';
 import SignUp from './signup';
 
@@ -12,7 +12,12 @@ import img4 from '../assets/img4.jpg';
 
 function LandingPage() {
    const [showSignUp, setShowSignUp] = useState(false);
-    
+   const modalRef = useRef();
+   const closeModal = (e) => {
+  if (modalRef.current=== e.target) {
+    setShowSignUp(false);
+    }
+}
 
   return (
     <section >
@@ -103,7 +108,7 @@ function LandingPage() {
     </button>
 
     {showSignUp && (
-      <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
+      <div ref={modalRef} onClick={closeModal}className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
         <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
           <button
             className="place-self-end cursor-pointer flex justify-between  "
