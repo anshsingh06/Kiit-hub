@@ -1,184 +1,307 @@
-import React from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useState, useRef } from 'react';
 import { CircleX } from 'lucide-react';
-import SignUp from './signup';
+import SignUp from './Signup';
+import './LandingPage.css';
+import campusImage from '../assets/kiitfront.jpg';
+import seniorsImage from '../assets/asksenior.jpg';
+import eventsImage from '../assets/event.jpg';
+import communityImage from '../assets/interactive.jpg';
 
-//import img1 from '../assets/img1.jpg'; 
-//import img2 from '../assets/img2.jpg'; 
-import img3 from '../assets/img3.jpg'; 
-import img4 from '../assets/img4.jpg'; 
-import kiitfront from '../assets/kiitfront.jpg';
-import asksenior from '../assets/asksenior.jpg';
-import event from '../assets/event.jpg';
-import interactive from '../assets/interactive.jpg';
-
+const features = [
+  {
+    number: '01',
+    eyebrow: 'Learn from each other',
+    title: 'Good questions deserve good answers.',
+    description:
+      'Bring academic and placement questions to the discussion space, and learn from perspectives across the student community.',
+    image: seniorsImage,
+    alt: 'Students talking together on campus',
+    link: '/discussion',
+    linkText: 'Visit discussions',
+    theme: 'sage',
+  },
+  {
+    number: '02',
+    eyebrow: 'Find your next thing',
+    title: 'There is always something happening.',
+    description:
+      'Browse campus event details and discover opportunities to show up, join in, and try something new.',
+    image: eventsImage,
+    alt: 'Students gathered for a campus event',
+    link: '/events',
+    linkText: 'Explore events',
+    theme: 'lime',
+  },
+  {
+    number: '03',
+    eyebrow: 'Feel part of campus',
+    title: 'A little more connected, every day.',
+    description:
+      'Keep campus conversations and useful updates closer, all from one welcoming place built around student life.',
+    image: communityImage,
+    alt: 'Students connecting as a campus community',
+    link: '/about',
+    linkText: 'Get to know us',
+    theme: 'cream',
+  },
+];
 
 function LandingPage() {
-   const [showSignUp, setShowSignUp] = useState(false);
-   const modalRef = useRef();
-   const closeModal = (e) => {
-  if (modalRef.current=== e.target) {
-    setShowSignUp(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+  const modalRef = useRef(null);
+
+  const closeOnBackdrop = (event) => {
+    if (event.target === modalRef.current) {
+      setShowSignUp(false);
     }
-}
+  };
 
   return (
-    <section className="min-h-screen bg-[#f5f8f2] text-[#173b2b]">
-    
-  {/* Main div */}
-  <div className="px-6 sm:px-20 max-w-7xl mx-auto pt-8">
+    <main className="landing-page">
+      <section className="landing-hero">
+        <div className="landing-hero__glow" aria-hidden="true" />
+        <div className="landing-shell landing-hero__grid">
+          <div className="landing-hero__copy">
+            <p className="landing-eyebrow">
+              <span className="landing-eyebrow__dot" />
+              Your campus, a little closer
+            </p>
+            <h1>
+              Connect.
+              <br />
+              <span>Engage.</span>
+              <br />
+              Belong.
+            </h1>
+            <p className="landing-hero__intro">
+              The student space for campus conversations, event discoveries,
+              and the little moments that make university life yours.
+            </p>
+            <div className="landing-hero__actions">
+              <button
+                className="landing-button landing-button--light"
+                onClick={() => setShowSignUp(true)}
+                type="button"
+              >
+                Join KIIT Connect <span aria-hidden="true">↗</span>
+              </button>
+              <Link className="landing-hero__text-link" to="/events">
+                See what’s happening <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <div className="landing-hero__note">
+              <span aria-hidden="true">✳</span>
+              Made for the people who make campus feel like home.
+            </div>
+          </div>
 
-       {/* Connect */}
-       <div className="w-full max-w-6xl mt-20 grid sm:grid-cols-2 gap-12"> </div>
-       
-        <div>
-          <h1 className="text-4xl sm:text-5xl font-black text-[#123d2a] mb-4 tracking-tight">
-        Connect. Engage.
-      </h1>
-      <p className="text-xl sm:text-2xl text-[#587463] font-semibold mb-10">
-        Secure student portal for campus life.
-      </p>
-      
-      </div>
-
-    
-      <div>
-        
-      <img src={kiitfront} className="h-90 w-200 rounded-3xl flex items-center justify-center ml-50 shadow-xl shadow-[#1c5535]/15 ring-4 ring-white" />
-      </div>
-     
-
-
-      {/* Section 2 - Senior*/}
-      <div className="w-full max-w-6xl mt-20 grid sm:grid-cols-2 gap-12">
-        <div>
-          <h2 className="text-2xl font-bold text-[#174b31] mb-2 ml-30">Ask seniors</h2>
-          <p className="text-[#61786a] text-base ml-30">
-            Open academic and placement forums <br /> where students receive <br />expert insights from seniors.
-          </p>
+          <div className="landing-hero__visual">
+            <div className="landing-hero__image-frame">
+              <img src={campusImage} alt="The KIIT campus" />
+            </div>
+            <div className="landing-hero__floating-card">
+              <span className="landing-hero__floating-icon" aria-hidden="true">
+                ✳
+              </span>
+              <span>
+                <strong>Campus life, connected</strong>
+                <small>Questions · Events · Community</small>
+              </span>
+            </div>
+            <div className="landing-hero__orbit" aria-hidden="true">
+              <span>DISCOVER · CONNECT · BELONG · </span>
+            </div>
+            <span className="landing-hero__sparkle" aria-hidden="true">
+              ✳
+            </span>
+          </div>
         </div>
+        <a className="landing-scroll-cue" href="#discover">
+          <span>Scroll to discover</span>
+          <span aria-hidden="true">↓</span>
+        </a>
+      </section>
 
+      <section className="landing-intro" id="discover">
+        <div className="landing-shell landing-intro__grid">
+          <div>
+            <p className="landing-eyebrow landing-eyebrow--green">
+              A shared space for student life
+            </p>
+            <h2>
+              Campus is better
+              <br />
+              <span>when we show up.</span>
+            </h2>
+          </div>
+          <div className="landing-intro__body">
+            <p>
+              University is more than classes. It’s questions you ask, events
+              you discover, and people you meet along the way. KIIT Connect
+              brings those parts of campus life into one easy-to-explore space.
+            </p>
+            <Link className="landing-inline-link" to="/about">
+              Get to know KIIT Connect <span aria-hidden="true">↗</span>
+            </Link>
+          </div>
+        </div>
+      </section>
 
-        <div> 
-      <img src={asksenior} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
-      </div>
+      <section className="landing-features">
+        <div className="landing-shell">
+          <div className="landing-section-heading">
+            <div>
+              <p className="landing-eyebrow landing-eyebrow--green">
+                Your campus, in one place
+              </p>
+              <h2>
+                Find your way
+                <br />
+                <span>into the conversation.</span>
+              </h2>
+            </div>
+            <p>
+              Start with a question, an event, or a new connection. There’s
+              more than one way to feel at home here.
+            </p>
+          </div>
 
-         {/* Section 3 - Event*/}
+          <div className="landing-feature-grid">
+            {features.map((feature) => (
+              <article
+                className={`landing-feature-card landing-feature-card--${feature.theme}`}
+                key={feature.number}
+              >
+                <div className="landing-feature-card__image">
+                  <img src={feature.image} alt={feature.alt} loading="lazy" />
+                  <span className="landing-feature-card__number">
+                    {feature.number}
+                  </span>
+                </div>
+                <div className="landing-feature-card__content">
+                  <p className="landing-feature-card__eyebrow">
+                    {feature.eyebrow}
+                  </p>
+                  <h3>{feature.title}</h3>
+                  <p className="landing-feature-card__description">
+                    {feature.description}
+                  </p>
+                  <Link className="landing-feature-card__link" to={feature.link}>
+                    {feature.linkText} <span aria-hidden="true">↗</span>
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <div> 
-      <img src={event} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
-      </div>
+      <section className="landing-manifesto">
+        <div className="landing-shell landing-manifesto__inner">
+          <div>
+            <p className="landing-eyebrow">The best campus stories are shared.</p>
+            <h2>
+              Your next connection
+              <br />
+              could start with <span>hello.</span>
+            </h2>
+          </div>
+          <Link className="landing-button landing-button--lime" to="/discussion">
+            Start a conversation <span aria-hidden="true">↗</span>
+          </Link>
+          <span className="landing-manifesto__decoration" aria-hidden="true">
+            ✳
+          </span>
+        </div>
+      </section>
 
-
-  <div className="flex flex-col justify-center">
-    <h2 className="text-xl font-bold text-[#174b31] mb-1">Event updates</h2>
-    <p className="text-[#61786a] text-sm">
-      Get real-time official event<br />  notifications and details <br /> straight from the university.
-    </p>
-  </div>
-
-  {/* Interactive Platform */}
-  <div className="flex flex-col justify-center">
-    <h2 className="text-xl font-bold text-[#174b31] mb-1 ml-30">Interactive platform</h2>
-    <p className="text-[#61786a] text-sm ml-30">
-      Participate in secure<br/> moderated discussions and <br/>campus community activities.
-    </p>
-  </div>
-  <div> 
-      <img src={interactive} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
-      </div>
-
-  </div>
-  </div>
-
-
-  {/* Join In – Signup Form */}
-<div className="mx-6 mt-12 mb-8 rounded-3xl bg-gradient-to-br from-[#123d2a] to-[#17613b] px-6 py-16 text-center text-white shadow-xl shadow-[#1c5535]/15 sm:mx-12">
-  <h2 className="text-3xl sm:text-4xl font-bold mb-2">Join in.</h2>
-  <p className="text-[#d5ead9] text-lg mb-6">Get started today.</p>
-
-  <div className="max-w-md mx-auto">
-    <input
-      type="email"
-      placeholder="rollno@kiit.ac.in"
-      className="w-full p-3 rounded-xl bg-white text-[#173b2b] outline-none mb-4 ring-1 ring-white/40 placeholder:text-[#829589] focus:ring-2 focus:ring-[#a7e16e]"
-    />
-    <button
-      onClick={() => setShowSignUp(true)}
-      className="w-full bg-[#a7e16e] text-[#123d2a] font-bold py-3 rounded-xl hover:bg-[#b9eb88] transition cursor-pointer"
-    >
-      Sign Up
-    </button>
-
-    {showSignUp && (
-      <div ref={modalRef} onClick={closeModal}className="fixed inset-0 bg-[#123d2a]/45 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-[#f8fbf6] text-[#173b2b] rounded-2xl shadow-2xl w-full max-w-md p-6 relative">
+      <section className="landing-join">
+        <div className="landing-shell landing-join__inner">
+          <div className="landing-join__copy">
+            <p className="landing-eyebrow landing-eyebrow--green">
+              Your campus, your community
+            </p>
+            <h2>
+              Come on in.
+              <br />
+              <span>There’s room for you.</span>
+            </h2>
+            <p>
+              Sign up to get started and make KIIT Connect part of your campus
+              experience.
+            </p>
+          </div>
           <button
-            className="place-self-end cursor-pointer flex justify-between  "
-            onClick={() => setShowSignUp(false)}
-          > <CircleX size={30}/>
-          
+            className="landing-button landing-button--green"
+            onClick={() => setShowSignUp(true)}
+            type="button"
+          >
+            Create your account <span aria-hidden="true">↗</span>
           </button>
-          <SignUp />
-    </div>
-  </div>
-)}
+        </div>
+      </section>
 
-  </div>
-</div>
+      <footer className="landing-footer">
+        <div className="landing-shell">
+          <div className="landing-footer__grid">
+            <div className="landing-footer__brand">
+              <span className="landing-footer__brand-mark" aria-hidden="true">
+                ✳
+              </span>
+              <strong>KIIT Connect</strong>
+              <p>A little more connected.</p>
+            </div>
+            <div>
+              <h3>Explore</h3>
+              <Link to="/about">About</Link>
+              <Link to="/howitworks">How it works</Link>
+              <Link to="/support">Support</Link>
+            </div>
+            <div>
+              <h3>Community</h3>
+              <Link to="/discussion">Discussion</Link>
+              <Link to="/events">Events</Link>
+              <Link to="/contact">Contact us</Link>
+            </div>
+            <div>
+              <h3>Campus</h3>
+              <Link to="/faq">Academic FAQs</Link>
+              <Link to="/placements">Placements</Link>
+              <Link to="/clubs">Clubs</Link>
+            </div>
+          </div>
+          <div className="landing-footer__bottom">
+            <span>© 2025 KIIT Connect</span>
+            <span>Made for campus life.</span>
+          </div>
+        </div>
+      </footer>
 
-{/* Footer */}
-<footer className="mt-16 border-t border-[#dce8dd] pt-10 text-left">
-  <div className="grid grid-cols-1 sm:grid-cols-4 gap-8 text-sm text-[#61786a]">
-
-    {/* Logo */}
-    <div>
-      <div className="font-bold text-lg text-[#174b31] mb-2">🟥◯▲</div>
-    </div>
-
-
-  {/* Portal */}
-  <div>
-    <h4 className="font-semibold text-[#174b31] mb-2">Portal</h4>
-    <ul className="space-y-1">
-      <li><Link to="/about" className="hover:underline">About</Link></li>
-      <li><Link to="/howitworks" className="hover:underline">How it Works</Link></li>
-      <li><Link to="/support" className="hover:underline">Support</Link></li>
-    </ul>
-  </div>
-
-  {/* Community */}
-  <div>
-    <h4 className="font-semibold text-[#174b31] mb-2">Community</h4>
-    <ul className="space-y-1">
-      <li><Link to="/discussion" className="hover:underline">Discussion</Link></li>
-      <li><Link to="/events" className="hover:underline">Events</Link></li>
-      <li><Link to="/contact" className="hover:underline">Contact Us</Link></li>
-    </ul>
-  </div>
-
-  {/* Campus */}
-  <div>
-    <h4 className="font-semibold text-[#174b31] mb-2">Campus</h4>
-    <ul className="space-y-1">
-      <li><Link to="/faq" className="hover:underline">Academic FAQs</Link></li>
-      <li><Link to="/placements" className="hover:underline">Placements</Link></li>
-      <li><Link to="/clubs" className="hover:underline">Clubs</Link></li>
-    </ul>
-  </div>
-</div>
-  <div className="text-xs text-center text-[#8ba092] mt-8">
-    © 2025 KIIT Connect. All rights reserved.
-  </div>
-</footer>
-
-  </section>
-
-    
-
+      {showSignUp && (
+        <div
+          aria-label="Create your KIIT Connect account"
+          aria-modal="true"
+          className="landing-signup-overlay"
+          onClick={closeOnBackdrop}
+          ref={modalRef}
+          role="dialog"
+        >
+          <div className="landing-signup-dialog">
+            <button
+              aria-label="Close sign-up form"
+              className="landing-signup-close"
+              onClick={() => setShowSignUp(false)}
+              type="button"
+            >
+              <CircleX size={28} />
+            </button>
+            <SignUp />
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
-
 
 export default LandingPage;
