@@ -1,16 +1,34 @@
+// import React from 'react';
+// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// import Navbar from './component/Navbar'; 
+// import LandingPage from './component/LandingPage';
+// import EventPage from './pages/EventPage'; 
+// import DiscussionPage from "./pages/DiscussionPage";
+// import About from './footer/About';
+// import HowItWorks from './footer/HowItWorks';
+// import Support from './footer/support'; 
+// import Contact from './footer/contact';
+// import Faq from './footer/faq';
+// import Placement from './footer/placement';
+// import Clubs from './footer/clubs';
+
+
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './component/Navbar'; 
+
+import Navbar from './component/navbar';
 import LandingPage from './component/LandingPage';
-import EventPage from './pages/EventPage'; 
-import DiscussionPage from "./pages/DiscussionPage";
+import EventPage from './pages/EventPage';
+import DiscussionPage from './pages/DiscussionPage';
+
 import About from './footer/About';
 import HowItWorks from './footer/HowItWorks';
-import Support from './footer/support'; 
-import Contact from './footer/contact';
-import Faq from './footer/faq';
-import Placement from './footer/placement';
-import Clubs from './footer/clubs';
+import Support from './footer/Support';
+import Contact from './footer/Contact';
+import Faq from './footer/Faq';
+import Placement from './footer/Placement';
+import Clubs from './footer/Clubs';
 
 
 
