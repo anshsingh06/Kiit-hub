@@ -7,8 +7,9 @@ import EventDetailModal from "./EventDetailModal";
 export default function EventPage() {
   const [events, setEvents] = useState([]);
    const [showModal, setShowModal] = useState(false);
-   //const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedEvent, setSelectedEvent] = useState(null);
+   const [selectedEvent, setSelectedEvent] = useState(null);
+   const [deletingEventId, setDeletingEventId] = useState(null);
+   const [deleteError, setDeleteError] = useState('');
 
   const fetchEvents = async () => {
     try {
@@ -24,11 +25,40 @@ export default function EventPage() {
   }, []);
 
   const handleDelete = async (id) => {
+    const event = events.find((item) => item._id === id);
+    if (!window.confirm(`Delete "${event?.title || 'this event'}"? This cannot be undone.`)) {
+      return;
+    }
+
+    let token;
     try {
-      await axios.delete(`http://localhost:5000/api/news/${id}`);
-      fetchEvents();
+      token = JSON.parse(localStorage.getItem('kiit-connect-auth') || 'null')?.token;
+    } catch {
+      setDeleteError('Your saved sign-in could not be read. Please sign in again and retry.');
+      return;
+    }
+
+    if (!token) {
+      setDeleteError('Please sign up or sign in before deleting an event.');
+      return;
+    }
+
+    setDeleteError('');
+    setDeletingEventId(id);
+    try {
+      await axios.delete(`http://localhost:5000/api/news/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setEvents((currentEvents) => currentEvents.filter((item) => item._id !== id));
+      setSelectedEvent((currentEvent) => currentEvent?._id === id ? null : currentEvent);
     } catch (err) {
-      console.error("Error deleting event:", err);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        setDeleteError('Your sign-in may have expired. Please sign in again and retry.');
+      } else {
+        setDeleteError(err.response?.data?.message || 'Could not delete the event. Please try again.');
+      }
+    } finally {
+      setDeletingEventId(null);
     }
   };
 
@@ -43,6 +73,12 @@ export default function EventPage() {
           Create Event
         </button>
       </div>
+
+      {deleteError && (
+        <p className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+          {deleteError}
+        </p>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {events.map((event) => (
@@ -70,9 +106,11 @@ export default function EventPage() {
           </button>
             <button
               onClick={() => handleDelete(event._id)}
-              className="absolute top-2 right-2 text-red-600 hover:text-red-800"
+              className="absolute top-2 right-2 rounded-full bg-white/95 px-3 py-1 text-sm font-medium text-red-600 shadow hover:bg-red-50 hover:text-red-800 disabled:cursor-wait disabled:opacity-60"
+              disabled={deletingEventId === event._id}
+              type="button"
             >
-              Delete
+              {deletingEventId === event._id ? 'Deleting…' : 'Delete'}
             </button>
           </div>
         ))}
@@ -93,6 +131,5 @@ export default function EventPage() {
 
   );
 }
-
 
 
