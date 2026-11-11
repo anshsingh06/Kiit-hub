@@ -1,66 +1,119 @@
-import React, { useRef, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import axios from 'axios';
+import { CircleX, Sparkles } from 'lucide-react';
 
-function QuestionModal({ onClose, onQuestionCreated }) {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const modalRef = useRef();
+function QuestionModal({ onClose, onQuestionCreated, token }) {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const closeModal = (e) => {
-    if (modalRef.current=== e.target) {
-      onClose();
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape' && !submitting) onClose();
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [onClose, submitting]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    if (!token) {
+      setError('Please sign up or sign in before asking a question.');
+      return;
     }
-  }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    setSubmitting(true);
+    setError('');
     try {
-      await axios.post("http://localhost:5000/api/posts", {
-        title,
-        content,
-      });
-      onQuestionCreated(); // Refresh questions
-      onClose(); // Close modal
-    } catch (err) {
-      console.error("Error creating question:", err);
+      await axios.post(
+        'http://localhost:5000/api/posts',
+        { title: title.trim(), content: content.trim() },
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      await onQuestionCreated();
+    } catch (requestError) {
+      setError(
+        requestError.response?.data?.message ||
+          'Could not post your question. Please try again.',
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  return (
-    <div ref={modalRef} onClick={closeModal}className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded shadow w-full max-w-lg relative">
+  return createPortal(
+    <div
+      className="question-dialog__overlay"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget && !submitting) onClose();
+      }}
+    >
+      <section
+        aria-label="Ask the community a question"
+        aria-modal="true"
+        className="question-dialog"
+        role="dialog"
+      >
         <button
-          className="absolute top-2 right-2 text-gray-600 text-xl hover:text-black"
+          aria-label="Close question form"
+          className="question-dialog__close"
+          disabled={submitting}
           onClick={onClose}
+          type="button"
         >
-          &times;
+          <CircleX size={27} />
         </button>
-        <h2 className="text-2xl font-bold mb-4">Ask a Question</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Question Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full border px-3 py-2 mb-2 rounded"
-            required
-          />
-          <textarea
-            placeholder="Add details..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            className="w-full border px-3 py-2 mb-2 rounded"
-            required
-          />
+        <div className="question-dialog__icon" aria-hidden="true">
+          <Sparkles size={22} />
+        </div>
+        <p className="question-dialog__eyebrow">START A CONVERSATION</p>
+        <h2>What’s on your mind?</h2>
+        <p className="question-dialog__intro">
+          Add a clear title and a little context so other students know how to help.
+        </p>
+        <form className="question-dialog__form" onSubmit={handleSubmit}>
+          <label>
+            Question title
+            <input
+              autoFocus
+              maxLength={160}
+              onChange={(event) => setTitle(event.target.value)}
+              placeholder="What would you like to know?"
+              required
+              value={title}
+            />
+          </label>
+          <label>
+            More details
+            <textarea
+              maxLength={5000}
+              onChange={(event) => setContent(event.target.value)}
+              placeholder="Share the context that might help someone answer..."
+              required
+              rows={5}
+              value={content}
+            />
+          </label>
+          {error && <p className="question-dialog__error" role="alert">{error}</p>}
           <button
+            className="question-dialog__submit"
+            disabled={submitting || !title.trim() || !content.trim()}
             type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Submit Question
+            {submitting ? 'Posting…' : 'Post question'}
+            {!submitting && <span aria-hidden="true">↗</span>}
           </button>
         </form>
-      </div>
-    </div>
+      </section>
+    </div>,
+    document.body,
   );
 }
 

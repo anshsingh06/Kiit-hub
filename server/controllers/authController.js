@@ -33,7 +33,7 @@ const register = async (req, res) => {
   res.status(201).json({
     message: 'User registered successfully',
     token,
-    user: { name: user.name, role: user.role, email: user.email },
+    user: { id: user._id.toString(), name: user.name, role: user.role, email: user.email },
   });
 };
 
@@ -50,7 +50,15 @@ const login = async (req, res) => {
     expiresIn: '7d',
   });
 
-  res.json({ token, user: { name: user.name, role: user.role, email: user.email } });
+  res.json({
+    token,
+    user: {
+      id: user._id.toString(),
+      name: user.name,
+      role: user.role,
+      email: user.email,
+    },
+  });
 };
 
 const getProfile = async (req, res) => {

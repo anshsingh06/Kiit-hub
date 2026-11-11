@@ -7,6 +7,7 @@ const postSchema = new mongoose.Schema({
   authorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   timestamp: { type: Date, default: Date.now },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  answers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Answer' }],
   upvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 

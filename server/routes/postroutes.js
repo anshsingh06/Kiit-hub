@@ -1,16 +1,19 @@
 const express = require('express');
+const authenticateToken = require('../middleware/authMiddleware');
+const {
+  addAnswer,
+  createPost,
+  deleteAnswer,
+  deletePost,
+  getAllPosts,
+} = require('../controllers/postController');
+
 const router = express.Router();
-// const authenticateToken = require('../middleware/authMiddleware');
-const { createPost, getAllPosts } = require('../controllers/postController');
-const { addAnswer } = require('../controllers/postController');
 
-// Create a new post
-router.post('/', createPost);
-
-// Get all posts
 router.get('/', getAllPosts);
-
-// Add an answer to a post
-router.post('/', addAnswer);
+router.post('/', authenticateToken, createPost);
+router.post('/:id/answers', authenticateToken, addAnswer);
+router.delete('/:id/answers/:answerId', authenticateToken, deleteAnswer);
+router.delete('/:id', authenticateToken, deletePost);
 
 module.exports = router;
