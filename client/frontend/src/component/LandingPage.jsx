@@ -4,10 +4,14 @@ import { useState, useRef } from 'react';
 import { CircleX } from 'lucide-react';
 import SignUp from './signup';
 
-import img1 from '../assets/img1.jpg'; 
-import img2 from '../assets/img2.jpg'; 
+//import img1 from '../assets/img1.jpg'; 
+//import img2 from '../assets/img2.jpg'; 
 import img3 from '../assets/img3.jpg'; 
 import img4 from '../assets/img4.jpg'; 
+import kiitfront from '../assets/kiitfront.jpg';
+import asksenior from '../assets/asksenior.jpg';
+import event from '../assets/event.jpg';
+import interactive from '../assets/interactive.jpg';
 
 
 function LandingPage() {
@@ -41,7 +45,7 @@ function LandingPage() {
     
       <div>
         
-      <img src={img1} className="h-90 w-200 rounded-3xl flex items-center justify-center ml-50 shadow-xl shadow-[#1c5535]/15 ring-4 ring-white" />
+      <img src={kiitfront} className="h-90 w-200 rounded-3xl flex items-center justify-center ml-50 shadow-xl shadow-[#1c5535]/15 ring-4 ring-white" />
       </div>
      
 
@@ -57,13 +61,13 @@ function LandingPage() {
 
 
         <div> 
-      <img src={img2} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
+      <img src={asksenior} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
       </div>
 
          {/* Section 3 - Event*/}
 
         <div> 
-      <img src={img3} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
+      <img src={event} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
       </div>
 
 
@@ -82,7 +86,7 @@ function LandingPage() {
     </p>
   </div>
   <div> 
-      <img src={img4} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
+      <img src={interactive} className="h-60 w-105 rounded-2xl flex items-center justify-center mr-25 shadow-lg shadow-[#1c5535]/10 ring-4 ring-white" />
       </div>
 
   </div>
