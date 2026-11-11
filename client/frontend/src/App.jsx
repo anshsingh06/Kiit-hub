@@ -17,7 +17,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Navbar from './component/navbar';
+
+import Navbar from './component/Navbar';
 import LandingPage from './component/LandingPage';
 import EventPage from './pages/EventPage';
 import DiscussionPage from './pages/DiscussionPage';
