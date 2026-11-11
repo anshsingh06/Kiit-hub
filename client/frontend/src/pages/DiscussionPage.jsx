@@ -5,7 +5,10 @@ import { MessageCircle, MessageSquareText, Plus, Send, Sparkles, Trash2 } from '
 import QuestionModal from './QuestionModal';
 import './DiscussionPage.css';
 
-const API_URL = 'http://localhost:5000/api/posts';
+//const API_URL = 'http://localhost:5000/api/posts';
+const API_URL = import.meta.env.VITE_API_URL;
+
+axios.get(`${API_URL}/api/users`);
 
 function readSession() {
   try {
