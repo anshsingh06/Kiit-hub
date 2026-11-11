@@ -682,60 +682,6 @@
   font-size: 10px;
 }
 
-.landing-signup-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-y: auto;
-  padding: 24px;
-  background: rgb(18 61 42 / 66%);
-  backdrop-filter: blur(8px);
-}
-
-.landing-signup-dialog {
-  position: relative;
-  width: min(100%, 480px);
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
-  border-radius: 22px;
-  background: #f8fbf6;
-  box-shadow: 0 28px 90px rgb(0 0 0 / 30%);
-}
-
-.landing-signup-close {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 1;
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border: 0;
-  border-radius: 50%;
-  color: var(--landing-green);
-  background: #eaf2e5;
-  cursor: pointer;
-  transition:
-    color 160ms ease,
-    background-color 160ms ease;
-}
-
-.landing-signup-close:hover {
-  color: #fff;
-  background: var(--landing-green);
-}
-
-.landing-signup-dialog > div {
-  margin-top: 0;
-  border: 0;
-  border-radius: 22px;
-  box-shadow: none;
-}
-
 @media (max-width: 850px) {
   .landing-shell {
     width: min(100% - 42px, 650px);

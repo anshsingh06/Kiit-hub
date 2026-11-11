@@ -1,39 +1,104 @@
-import React, { useRef } from "react";
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { CalendarDays, CircleX } from 'lucide-react';
+import './EventDetailModal.css';
 
 function EventDetailModal({ event, onClose }) {
-const modalRef = useRef();
-  
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
 
-const closeModal = (e) => {
-  if (modalRef.current=== e.target) {
-    onClose();
-    }
-}
- return (
-    <div  ref={modalRef} onClick={closeModal} className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-50 z-50">
-      <div className="bg-white p-6 rounded max-w-lg w-full relative">
+    const closeOnEscape = (keyboardEvent) => {
+      if (keyboardEvent.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [onClose]);
+
+  const imageUrl = event.images?.[0]
+    ? `http://localhost:5000/uploads/${event.images[0]}`
+    : null;
+  const eventDate = event.eventDate
+    ? new Date(event.eventDate).toLocaleDateString(undefined, {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
+  const postedDate = event.createdAt
+    ? new Date(event.createdAt).toLocaleDateString(undefined, {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : null;
+
+  return createPortal(
+    <div
+      className="event-detail-overlay"
+      onMouseDown={(mouseEvent) => {
+        if (mouseEvent.target === mouseEvent.currentTarget) onClose();
+      }}
+    >
+      <article
+        aria-label={`${event.title} event details`}
+        aria-modal="true"
+        className="event-detail-dialog"
+        role="dialog"
+      >
         <button
+          aria-label="Close event details"
+          className="event-detail-close"
           onClick={onClose}
-          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 text-xl"
+          type="button"
         >
-          &times;
+          <CircleX size={29} />
         </button>
-        <h2 className="text-2xl font-bold mb-2">{event.title}</h2>
-        <p className="mb-4">{event.description}</p>
-        {event.images && event.images.length > 0 && (
-          <img
-            src={`http://localhost:5000/uploads/${event.images[0]}`}
-            alt="Event"
-            className="rounded mb-4"
-          />
+
+        {imageUrl ? (
+          <div className="event-detail-image">
+            <img src={imageUrl} alt={`${event.title} event`} />
+            <span className="event-detail-image__label">EVENT DETAILS</span>
+          </div>
+        ) : (
+          <div className="event-detail-image event-detail-image--placeholder">
+            <span aria-hidden="true">✳</span>
+            <span className="event-detail-image__label">EVENT DETAILS</span>
+          </div>
         )}
-        {event.createdAt && (
-          <p className="text-sm text-gray-500">
-            Posted on: {new Date(event.createdAt).toLocaleDateString()}
-          </p>
-        )}
-      </div>
-    </div>
+
+        <div className="event-detail-content">
+          <p className="event-detail-eyebrow">KIIT Connect · Campus events</p>
+          <h2>{event.title}</h2>
+          {eventDate && (
+            <div className="event-detail-date">
+              <span className="event-detail-date__icon" aria-hidden="true">
+                <CalendarDays size={18} />
+              </span>
+              <span>
+                <small>Event date</small>
+                <strong>{eventDate}</strong>
+              </span>
+            </div>
+          )}
+          <div className="event-detail-description">
+            <h3>About this event</h3>
+            <p>{event.description || 'No description has been added yet.'}</p>
+          </div>
+          {postedDate && (
+            <p className="event-detail-posted">Posted {postedDate}</p>
+          )}
+        </div>
+      </article>
+    </div>,
+    document.body,
   );
 }
 

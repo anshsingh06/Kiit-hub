@@ -1,7 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CircleX } from 'lucide-react';
-import SignUp from './Signup';
+import SignupDialog from './SignupDialog';
 import './LandingPage.css';
 import campusImage from '../assets/kiitfront.jpg';
 import seniorsImage from '../assets/asksenior.jpg';
@@ -49,13 +48,6 @@ const features = [
 
 function LandingPage() {
   const [showSignUp, setShowSignUp] = useState(false);
-  const modalRef = useRef(null);
-
-  const closeOnBackdrop = (event) => {
-    if (event.target === modalRef.current) {
-      setShowSignUp(false);
-    }
-  };
 
   return (
     <main className="landing-page">
@@ -278,28 +270,11 @@ function LandingPage() {
         </div>
       </footer>
 
-      {showSignUp && (
-        <div
-          aria-label="Create your KIIT Connect account"
-          aria-modal="true"
-          className="landing-signup-overlay"
-          onClick={closeOnBackdrop}
-          ref={modalRef}
-          role="dialog"
-        >
-          <div className="landing-signup-dialog">
-            <button
-              aria-label="Close sign-up form"
-              className="landing-signup-close"
-              onClick={() => setShowSignUp(false)}
-              type="button"
-            >
-              <CircleX size={28} />
-            </button>
-            <SignUp />
-          </div>
-        </div>
-      )}
+      <SignupDialog
+        open={showSignUp}
+        onClose={() => setShowSignUp(false)}
+        onSuccess={() => setShowSignUp(false)}
+      />
     </main>
   );
 }

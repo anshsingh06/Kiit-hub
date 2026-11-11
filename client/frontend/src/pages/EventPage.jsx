@@ -55,7 +55,7 @@ export default function EventPage() {
               />
             )}
             <h2 className="text-xl font-semibold">{event.title}</h2>
-            <p className="text-gray-700">{event.description.slice(0, 100)}</p>
+            <p className="text-gray-700">{(event.description || '').slice(0, 100)}</p>
             {event.eventDate && (
               <p className="text-sm text-gray-500 mt-2">
                 {new Date(event.eventDate).toLocaleDateString()}
@@ -72,17 +72,18 @@ export default function EventPage() {
               onClick={() => handleDelete(event._id)}
               className="absolute top-2 right-2 text-red-600 hover:text-red-800"
             >
-              {selectedEvent && (
-        <EventDetailModal
-          event={selectedEvent}
-          onClose={() => setSelectedEvent(null)}
-        />
-      )}
               Delete
             </button>
           </div>
         ))}
       </div>
+
+      {selectedEvent && (
+        <EventDetailModal
+          event={selectedEvent}
+          onClose={() => setSelectedEvent(null)}
+        />
+      )}
 
       {showModal && (
         <EventModal onClose={() => setShowModal(false)} onEventCreated={fetchEvents} />
@@ -92,7 +93,6 @@ export default function EventPage() {
 
   );
 }
-
 
 
 

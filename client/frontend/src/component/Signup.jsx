@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { CircleX } from 'lucide-react'; 
 
-const SignUp = () => {
+const SignUp = ({ onSuccess }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     department: '',
-    year: '',
-    role:''
+    year: ''
   });
 
   const [message, setMessage] = useState('');
@@ -22,7 +20,22 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const res = await axios.post('http://localhost:5000/api/auth/register', formData);
-      setMessage(res.data.message);
+      const { token, user } = res.data;
+      if (!token || !user?.name) {
+        setMessage('Registration succeeded, but sign-in could not be completed. Please log in.');
+        return;
+      }
+
+      try {
+        localStorage.setItem('kiit-connect-auth', JSON.stringify({ token, user }));
+      } catch {
+        setMessage('Account created, but your sign-in could not be saved in this browser.');
+        return;
+      }
+
+      setMessage(res.data.message || 'User registered successfully');
+      window.dispatchEvent(new CustomEvent('kiit-auth-change', { detail: user }));
+      onSuccess?.(user);
     } catch (err) {
       setMessage(err.response?.data?.error || 'Registration failed');
     }
@@ -84,58 +97,10 @@ const SignUp = () => {
           className="w-full p-2 border rounded"
         />
 
-  <div className="space-y-2">
-  <label className="font-medium block">Select Role:</label>
-
-
-  
-
-  <label className="inline-flex items-center mr-4">
-    <input
-      type="radio"
-      name="role"
-      value="admin"
-      checked={formData.role === 'admin'}
-      onChange={handleChange}
-      className="mr-2"
-    />
-    Admin
-  </label>
-
-  <label className="inline-flex items-center mr-4">
-    <input
-      type="radio"
-      name="role"
-      value="senior"
-      checked={formData.role === 'senior'}
-      onChange={handleChange}
-      className="mr-2"
-    />
-    Senior(3rd,4th Yr)
-  </label>
-
-  <label className="inline-flex items-center">
-    <input
-      type="radio"
-      name="role"
-      value="student"
-      checked={formData.role === 'student'}
-      onChange={handleChange}
-      className="mr-2"
-    />
-    Student
-  </label>
-
-  
-</div>
-
-
-        
-
-    <button
-    type="submit"
-    className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
-    >
+        <button
+          type="submit"
+          className="w-full bg-green-600 text-white p-2 rounded hover:bg-green-700"
+        >
           Register
         </button>
       </form>
@@ -144,5 +109,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
